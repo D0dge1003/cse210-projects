@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 
@@ -7,6 +8,9 @@ class Program
     static void Main(string[] args)
     {
         bool isRunning = true;
+
+        Journal theJournal = new Journal();
+        PromptGenerator promptGenerator = new PromptGenerator();
 
         while(isRunning)
         {
@@ -24,25 +28,47 @@ class Program
 
             if (choice == "1")
             {
-                Console.WriteLine("If I had one thing I could do over today what would it be?");
-                string entry = Console.ReadLine();
-            } 
-            else if(choice == "2")
-            {
-                foreach 
-            }
-            else if(choice == "3")
-            {
+                string randomPrompt = promptGenerator.GetRandomPrompt();
+                Console.WriteLine(randomPrompt);
 
+                Console.Write(">");
+                string userEntryText = Console.ReadLine();
+                
+                Entry anEntry = new Entry();
+                anEntry._date = DateTime.Now.ToShortDateString();
+                anEntry._promptText = randomPrompt;
+                anEntry._entryText = userEntryText;
+
+                theJournal.AddEntry(anEntry);
+                Console.WriteLine("\nSaved!");
+                Console.WriteLine("Press enter to go back to welcome page.");
+                Console.ReadKey();
+            } 
+            else if (choice =="2")
+            {
+                theJournal.DisplayAll();
+                Console.WriteLine("Press enter to go back to welcome page.");
+                Console.ReadKey();
             }
+            else if (choice =="3")
+            {
+                Console.WriteLine("Enter the filename to load: ");
+                Console.Write(">");
+                string fileName = Console.ReadLine();
+                theJournal.LoadFromFile(fileName);
+                Console.WriteLine("Press enter to go back to welcome page.");
+                Console.ReadKey();
+            }
+            
             else if (choice == "4")
             {
-                Console.WriteLine("Enter the name for your file:");
+                Console.WriteLine("Enter the name for your file:  (No special characters e.g format:text.txt)");
+                Console.Write(">");
                 string fileName = Console.ReadLine();
 
-                string filePath = Path.Combine(Directory.GetCurrentDirectory(), fileName);
-                Journal fileManager = new Journal();
-                fileManager.SaveToFile(filePath);
+                theJournal.SaveToFile(fileName);
+                Console.WriteLine("Press enter to go back to welcome page.");
+                Console.ReadKey();
             }
             else if(choice == "5")
             {
@@ -52,6 +78,7 @@ class Program
             else
             {
                 Console.WriteLine("Invalid Choice. Press any key to try again.");
+                Console.WriteLine("Press enter to go back to welcome page.");
                 Console.ReadKey();
             }
         }

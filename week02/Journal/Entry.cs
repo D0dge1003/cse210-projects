@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
 
 public class Entry
 {
@@ -8,6 +10,8 @@ public class Entry
 
     public void Display()
     {
-        Console.WriteLine($"");
+        Console.WriteLine($"Date:{_date} - Prompt: {_promptText}");
+        Console.WriteLine($"= {_entryText}");
+        Console.WriteLine();
     }
 }
